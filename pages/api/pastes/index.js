@@ -1,31 +1,52 @@
-// POST /api/pastes - Create a new paste
-import { v4 as uuidv4 } from 'uuid';
-import client from '../../../lib/db';
-import { getExpirationTime } from '../../../lib/time';
+import { nanoid } from 'nanoid'
+import { redis } from '../../../lib/db'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
   try {
-    const { content, expiresIn = 60 } = req.body;
+    const { content, ttl_seconds, max_views } = req.body
 
-    if (!content) {
-      return res.status(400).json({ error: 'Content is required' });
+    // Validation
+    if (!content || typeof content !== 'string') {
+      return res.status(400).json({ error: 'Invalid content' })
     }
 
-    const id = uuidv4();
-    const expirationTime = getExpirationTime(expiresIn);
+    if (ttl_seconds !== undefined && ttl_seconds < 1) {
+      return res.status(400).json({ error: 'Invalid ttl_seconds' })
+    }
 
-    await client.setEx(
-      `paste:${id}`,
-      Math.ceil(expirationTime / 1000) - Math.ceil(Date.now() / 1000),
-      JSON.stringify({ content, createdAt: Date.now() })
-    );
+    if (max_views !== undefined && max_views < 1) {
+      return res.status(400).json({ error: 'Invalid max_views' })
+    }
 
-    res.status(201).json({ id, url: `/p/${id}` });
+    const id = nanoid()
+    const now = Date.now()
+
+    const paste = {
+      id,
+      content,
+      created_at: now,
+      expires_at: ttl_seconds ? now + ttl_seconds * 1000 : null,
+      remaining_views: max_views ?? null
+    }
+
+    // Set with TTL if specified
+    if (ttl_seconds) {
+      await redis.setex(`paste:${id}`, ttl_seconds, JSON.stringify(paste))
+    } else {
+      await redis.set(`paste:${id}`, JSON.stringify(paste))
+    }
+
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000'
+    res.status(201).json({
+      id,
+      url: `${baseUrl}/p/${id}`
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error creating paste:', error)
+    res.status(500).json({ error: 'Internal server error' })
   }
 }

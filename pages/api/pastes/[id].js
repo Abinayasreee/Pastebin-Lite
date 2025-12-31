@@ -1,23 +1,47 @@
-// GET /api/pastes/:id - Retrieve a paste
-import client from '../../../lib/db';
+import { redis } from '../../../lib/db'
+import { getNow } from '../../../lib/time'
 
 export default async function handler(req, res) {
-  const { id } = req.query;
-
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
   try {
-    const paste = await client.get(`paste:${id}`);
+    const key = `paste:${req.query.id}`
+    const pasteData = await redis.get(key)
 
-    if (!paste) {
-      return res.status(404).json({ error: 'Paste not found' });
+    if (!pasteData) {
+      return res.status(404).json({ error: 'Not found' })
     }
 
-    const data = JSON.parse(paste);
-    res.status(200).json(data);
+    // Parse paste if it's a string
+    const paste = typeof pasteData === 'string' ? JSON.parse(pasteData) : pasteData
+
+    const now = getNow(req)
+
+    // TTL check
+    if (paste.expires_at !== null && now > paste.expires_at) {
+      await redis.del(key)
+      return res.status(404).json({ error: 'Expired' })
+    }
+
+    // View limit check
+    if (paste.remaining_views !== null) {
+      if (paste.remaining_views <= 0) {
+        await redis.del(key)
+        return res.status(404).json({ error: 'View limit exceeded' })
+      }
+
+      paste.remaining_views -= 1
+      await redis.set(key, JSON.stringify(paste))
+    }
+
+    res.status(200).json({
+      content: paste.content,
+      remaining_views: paste.remaining_views,
+      expires_at: paste.expires_at
+        ? new Date(paste.expires_at).toISOString()
+        : null
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error fetching paste:', error)
+    res.status(500).json({ error: 'Internal server error' })
   }
 }
+
