@@ -4,7 +4,7 @@
 
 **GitHub Repository**: https://github.com/Abinayasreee/Pastebin-Lite
 
-**Deployed Application**: [To be deployed to Vercel - see deployment instructions below]
+**Deployed Application**: https://pastebin-lite-chi-ashy.vercel.app/
 
 ---
 

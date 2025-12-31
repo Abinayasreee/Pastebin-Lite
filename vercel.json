@@ -2,16 +2,5 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "env": {
-    "REDIS_URL": {
-      "description": "Upstash Redis URL (https://upstash.com)"
-    },
-    "REDIS_TOKEN": {
-      "description": "Upstash Redis token"
-    },
-    "BASE_URL": {
-      "description": "Base URL for paste links (e.g., https://your-app.vercel.app)"
-    }
-  }
+  "framework": "nextjs"
 }
