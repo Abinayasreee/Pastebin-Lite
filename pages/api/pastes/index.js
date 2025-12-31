@@ -44,7 +44,7 @@ export default async function handler(req, res) {
       await redis.set(`paste:${id}`, JSON.stringify(paste))
     }
 
-    const baseUrl = process.env.BASE_URL || process.env.VERCEL_URL || 'https://pastebin-lite-chi-ashy.vercel.app'
+    const baseUrl = process.env.BASE_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://pastebin-lite-chi-ashy.vercel.app'
     res.status(201).json({
       id,
       url: `${baseUrl}/p/${id}`
