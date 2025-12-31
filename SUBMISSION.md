@@ -10,7 +10,7 @@
 
 ## Requirements Fulfillment
 
-### ✅ Functional Requirements
+###  Functional Requirements
 
 #### User Capabilities
 - [x] Create a paste containing arbitrary text
@@ -53,7 +53,7 @@
 - [x] Prevents XSS attacks
 - [x] Content rendered in `<pre>` tag (preserves formatting)
 
-### ✅ Repository Requirements
+###  Repository Requirements
 
 #### Repository Structure
 - [x] README.md exists at root
@@ -76,7 +76,7 @@
 - [x] No hardcoded database migrations needed
 - [x] No shell access or manual setup required
 
-### ✅ Technology Stack
+###  Technology Stack
 
 **Frontend**: 
 - React 18 (via Next.js)
@@ -235,10 +235,10 @@ content: escapeHtml(paste.content)
 - Scales horizontally on Vercel
 
 **What we avoided**:
-- ❌ Global arrays/objects
-- ❌ In-memory caches
-- ❌ Hardcoded paths
-- ❌ Localhost URLs
+-  Global arrays/objects
+-  In-memory caches
+-  Hardcoded paths
+-  Localhost URLs
 
 ---
 
@@ -284,7 +284,7 @@ npm start
 ## Deployment to Vercel
 
 ### Step 1: Prepare Repository
-✅ Already pushed to: https://github.com/Abinayasreee/Pastebin-Lite
+ Already pushed to: https://github.com/Abinayasreee/Pastebin-Lite
 
 ### Step 2: Deploy to Vercel
 ```bash
@@ -403,19 +403,19 @@ pastebin-lite/
 
 ## Summary
 
-**Status**: ✅ Complete and ready for evaluation
+**Status**:  Complete and ready for evaluation
 
 **What's Included**:
-- ✅ Fully functional pastebin application
-- ✅ All required routes and functionality
-- ✅ Comprehensive error handling
-- ✅ HTML safety (XSS prevention)
-- ✅ Deterministic time testing support
-- ✅ Public GitHub repository
-- ✅ Detailed README with setup instructions
-- ✅ Persistence layer documentation
-- ✅ Vercel deployment ready
-- ✅ Code quality standards met
+-  Fully functional pastebin application
+-  All required routes and functionality
+-  Comprehensive error handling
+-  HTML safety (XSS prevention)
+-  Deterministic time testing support
+-  Public GitHub repository
+-  Detailed README with setup instructions
+-  Persistence layer documentation
+-  Vercel deployment ready
+-  Code quality standards met
 
 **Time to Deploy**: 
 1. Set up Upstash Redis (2 minutes)

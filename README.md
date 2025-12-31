@@ -50,12 +50,12 @@ A lightweight pastebin service built with Next.js and Redis. Users can create te
 **Database**: Upstash Redis (Serverless Redis)
 
 **Why Upstash?**
-- ✅ Serverless architecture (perfect for Vercel deployment)
-- ✅ No infrastructure management
-- ✅ Automatic scaling
-- ✅ Built-in persistence
-- ✅ HTTP REST API and native Redis protocol support
-- ✅ Free tier sufficient for testing
+-  Serverless architecture (perfect for Vercel deployment)
+-  No infrastructure management
+-  Automatic scaling
+-  Built-in persistence
+-  HTTP REST API and native Redis protocol support
+-  Free tier sufficient for testing
 
 **How it works:**
 - Each paste is stored as a JSON string with key format: `paste:{id}`
@@ -249,11 +249,11 @@ curl -H "x-test-now-ms: 1000000000000000" \
 
 ## Code Quality Notes
 
-✅ **No hardcoded URLs** - Dynamic URLs using `BASE_URL` environment variable
-✅ **No secrets in repo** - `.env.local` in `.gitignore`, template file provided
-✅ **Serverless-safe** - No global mutable state, all state in Redis
-✅ **Standard setup** - `npm install && npm run dev` works out of the box
-✅ **Auto-deployment** - No manual migrations needed
+ **No hardcoded URLs** - Dynamic URLs using `BASE_URL` environment variable
+ **No secrets in repo** - `.env.local` in `.gitignore`, template file provided
+ **Serverless-safe** - No global mutable state, all state in Redis
+ **Standard setup** - `npm install && npm run dev` works out of the box
+ **Auto-deployment** - No manual migrations needed
 
 ## Build and Production
 
