@@ -7,6 +7,10 @@ export default async function handler(req, res) {
   }
 
   try {
+    if (!redis) {
+      return res.status(503).json({ error: 'Service unavailable: Redis not configured' })
+    }
+
     const { content, ttl_seconds, max_views } = req.body
 
     // Validation

@@ -3,6 +3,10 @@ import { redis } from '../../lib/db'
 
 export async function getServerSideProps({ params }) {
   try {
+    if (!redis) {
+      return { notFound: true }
+    }
+
     const pasteData = await redis.get(`paste:${params.id}`)
 
     if (!pasteData) {

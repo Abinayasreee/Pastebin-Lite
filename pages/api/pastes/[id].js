@@ -3,6 +3,10 @@ import { getNow } from '../../../lib/time'
 
 export default async function handler(req, res) {
   try {
+    if (!redis) {
+      return res.status(503).json({ error: 'Service unavailable: Redis not configured' })
+    }
+
     const key = `paste:${req.query.id}`
     const pasteData = await redis.get(key)
 
